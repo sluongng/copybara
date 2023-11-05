@@ -15,6 +15,22 @@ test --java_language_version=11
 build --tool_java_language_version=11
 test --tool_java_language_version=11
 
+build --bes_results_url=https://app.buildbuddy.io/invocation/
+build --bes_backend=grpcs://remote.buildbuddy.io
+build --remote_cache=grpcs://remote.buildbuddy.io
+build --remote_timeout=3600
+build --remote_executor=grpcs://remote.buildbuddy.io
+build --platforms=@buildbuddy_toolchain//:platform_linux
+build --host_platform=@buildbuddy_toolchain//:platform_linux
+build --extra_execution_platforms=@buildbuddy_toolchain//:platform_linux
+build --crosstool_top=@buildbuddy_toolchain//:ubuntu_cc_toolchain_suite
+build --extra_toolchains=@buildbuddy_toolchain//:ubuntu_cc_toolchain
+build --define=EXECUTOR=remote
+build --remote_upload_local_results
+build --remote_download_minimal
+build --jobs=100
+build --verbose_failures
+build --cpu=k8 --host_cpu=k8
 
 ################################################################################
 # User bazel configuration
@@ -24,3 +40,6 @@ test --tool_java_language_version=11
 # *last* statement in the root configuration file, as the local configuration
 # file should be able to overwrite flags from the root configuration.
 try-import %workspace%/.bazelrc.user
+
+# CHANGE ME
+build --remote_header=x-buildbuddy-api-key=xxxx

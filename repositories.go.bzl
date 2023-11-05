@@ -13,13 +13,25 @@
 # limitations under the License.
 
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
-load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
+load("@io_bazel_rules_go//go:deps.bzl", "go_download_sdk", "go_register_toolchains", "go_rules_dependencies")
 load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies", "go_repository")
 
 def copybara_go_repositories():
     go_rules_dependencies()
 
-    go_register_toolchains(version = "1.19.5")
+    go_download_sdk(
+        name = "go_sdk_linux",
+        goarch = "amd64",
+        goos = "linux",
+        version = "1.19.5",
+    )
+    go_download_sdk(
+        name = "go_sdk_macos",
+        goarch = "arm64",
+        goos = "darwin",
+        version = "1.19.5",
+    )
+    go_register_toolchains()
 
     gazelle_dependencies()
 
